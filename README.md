@@ -1,17 +1,18 @@
 # 🎯 Thematic-Analyzer
 
 **Automated Braun & Clarke thematic analysis for batches of interview transcripts – powered by OpenAI.**
-You drop your `.txt` or `.md` transcripts into a folder, run one command, and get a multi-sheet Excel workbook with:
+You drop your `.txt` or `.md` transcripts in the "/transcripts"-folder (and optionally in one or several sub folders if interviews were held across different contexts, e.g. Kenya v. Zambia), run one command, and get a multi-sheet Excel workbook with:
 
 | Sheet                      | What’s inside                                                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | **Themes × Interviews**    | Theme definitions, per-interview codes, and the representative quotes you told the tool to keep (default: ≤3 per cell).               |
-| **Custom Analyses**        | One row per “custom question” you register (e.g. *Ticket Sizes & Stage Coverage*). Each interview’s answer appears in its own column. |
+| **Custom Analyses**        | One row per “custom question” you register (e.g. _Ticket Sizes & Stage Coverage_). Each interview’s answer appears in its own column. |
 | **Summary Stats**          | A 1–3 sentence GPT summary that quantifies patterns across **all** interviews for every custom question.                              |
 | **Stats – Kenya / Zambia** | Same as above but split by region.                                                                                                    |
-| **Thematic Insights**      | GPT narration that compares how each theme plays out in Kenya vs. Zambia, with named quotes.                                          |
 
 All long-running OpenAI calls come with exponential-backoff retry logic, so you rarely crash even on free-tier rate limits.
+
+**For example output** of complete analysis and custom questions, have a look at the files in the "/output"-folder.
 
 ---
 
@@ -97,15 +98,14 @@ Kukula (ZM) calls local banks “collateral-obsessed”, while Simon (KE) lauds 
 
 ## 🧩 How it works (under the hood)
 
-* **Segmentation** – each transcript is split into \~600-character chunks.
-* **Inductive coding** – GPT returns ≤3 semantic codes (JSON) per chunk.
-* **Clustering** – codes are embedded (OpenAI `text-embedding-3-small`) and clustered.
-* **Theme naming** – GPT summarizes clusters and quotes to define themes.
-* **RQ tagging (optional)** – maps themes to your Research Questions.
-* **Representative quotes** – selects top `n` quotes per theme and interview.
-* **Custom rows** – analyst-defined prompts answered per transcript.
-* **Excel writer** – merges data into Excel and color-codes by RQ.
-* **Cross-country narration** – GPT writes “Zambia vs Kenya” mini-essays per theme.
+- **Segmentation** – each transcript is split into \~600-character chunks.
+- **Inductive coding** – GPT returns ≤3 semantic codes (JSON) per chunk.
+- **Clustering** – codes are embedded (OpenAI `text-embedding-3-small`) and clustered.
+- **Theme naming** – GPT summarizes clusters and quotes to define themes.
+- **RQ tagging (optional)** – maps themes to your Research Questions.
+- **Representative quotes** – selects top `n` quotes per theme and interview.
+- **Custom rows** – analyst-defined prompts answered per transcript.
+- **Excel writer** – merges data into Excel and color-codes by RQ.
 
 All GPT/embedding calls include retry logic:
 
@@ -150,9 +150,9 @@ Defaults to “Zambia” (see `load_transcripts_from_dir`).
 
 Pull requests welcome – especially for:
 
-* new clustering back-ends
-* better resume logic
-* additional output formats (e.g. PowerPoint)
+- new clustering back-ends
+- better resume logic
+- additional output formats (e.g. PowerPoint)
 
 ---
 
